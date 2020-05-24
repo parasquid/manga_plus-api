@@ -1,0 +1,6 @@
+AllCops:
+  Exclude:
+    - 'lib/manga_plus/api/manga_plus_pb.rb'
+
+Style/Documentation:
+  Enabled: false
