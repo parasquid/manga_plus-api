@@ -8,7 +8,13 @@ require 'httparty'
 module MangaPlus
   module Api
     class Error < StandardError; end
-
+    module Utils
+      def self.decode(image, encryption_key:)
+        key = [encryption_key].pack('H*')
+        key_size = key.bytes.size
+        image.bytes.map.with_index { |e, i| e ^ key.bytes[i % key_size] }
+      end
+    end
     API = 'https://jumpg-webapi.tokyo-cdn.com/api'
 
     class AllTitlesView
@@ -37,7 +43,7 @@ module MangaPlus
       OPTIONS = 'chapter_id=%<chapter_id>s&split=%<split>s&img_quality=%<img_quality>s'
       URL = API + '/manga_viewer?' + OPTIONS
 
-      def initialize(chapter_id, split: 'yes', img_quality: 'high')
+      def initialize(chapter_id, split: 'yes', img_quality: 'super_high')
         @options = {
           chapter_id: chapter_id,
           split: split,
@@ -48,7 +54,7 @@ module MangaPlus
       def call
         protobuf = HTTParty.get(URL % @options).body
         response = MangaPlus::Response.decode(protobuf).to_h
-        response.dig(:success)
+        response.dig(:success, :mangaViewer)
       end
     end
   end

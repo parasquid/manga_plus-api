@@ -26,7 +26,13 @@ message MangaPage {
     string imageUrl = 1;
     uint32 width = 2;
     uint32 height = 3;
-    int32 type = 4;
+    enum Type {
+        SINGLE = 0;
+        LEFT = 1;
+        RIGHT = 2;
+        DOUBLE = 3;
+    }
+    Type type = 4;
     string encryptionKey = 5;
 }
 

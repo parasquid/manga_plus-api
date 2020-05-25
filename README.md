@@ -1,6 +1,7 @@
 # MangaPlus::Api
 
 Thin API layer for the MangaPlus manga site
+
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -11,13 +12,19 @@ gem 'manga_plus-api'
 
 And then execute:
 
-    $ bundle
+``` bash
+bundle
+```
 
 Or install it yourself as:
 
-    $ gem install manga_plus-api
+``` bash
+gem install manga_plus-api
+```
 
 ## Usage
+
+This sample application will get a random title from the list of titles available, choose the first chapter, and download all the pages for that chapter (decrypting the images).
 
 ``` ruby
 # frozen_string_literal: true
@@ -25,20 +32,32 @@ Or install it yourself as:
 require 'bundler/setup'
 require 'manga_plus/api'
 
-all = MangaPlus::Api::AllTitlesView.new
-title_id = all.call[:titles].sample[:titleId]
+all_api = MangaPlus::Api::AllTitlesView.new
+title_id = all_api.call[:titles].sample[:titleId]
 
-title = MangaPlus::Api::TitleDetailView.new(title_id)
-chapter_id = title.call[:firstChapterList].first[:chapterId]
+title_api = MangaPlus::Api::TitleDetailView.new(title_id)
+chapter_id = title_api.call[:firstChapterList].first[:chapterId]
 
-manga = MangaPlus::Api::MangaViewer.new(chapter_id)
-pages = manga.call[:mangaViewer][:pages].map do |page|
-  if page[:mangaPage]
-    [ page[:mangaPage][:imageUrl], page[:mangaPage][:encryptionKey] ]
+manga_api = MangaPlus::Api::MangaViewer.new(chapter_id)
+manga = manga_api.call
+
+folder = "#{manga[:titleName]} #{manga[:chapterName]} - #{chapter_id}"
+Dir.mkdir folder unless Dir.exists?(folder); Dir.chdir folder
+
+manga[:pages].compact.each_with_index do |page, index|
+  next unless page[:mangaPage]
+
+  filename = "#{(index + 1).to_s.rjust(3, '0')}"
+  key = page[:mangaPage][:encryptionKey]
+  type = page[:mangaPage][:type]
+
+  image = HTTParty.get(page[:mangaPage][:imageUrl]).body
+  decoded_image = MangaPlus::Api::Utils.decode(image, encryption_key: key)
+
+  File.open(filename + " [#{type}]" + ".jpg", 'wb') do |file|
+    file.write(decoded_image.pack("C*"))
   end
-end.compact
-
-puts pages
+end
 ```
 
 ## Development

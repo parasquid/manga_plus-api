@@ -29,8 +29,14 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       optional :imageUrl, :string, 1
       optional :width, :uint32, 2
       optional :height, :uint32, 3
-      optional :type, :int32, 4
+      optional :type, :enum, 4, 'manga_plus.MangaPage.Type'
       optional :encryptionKey, :string, 5
+    end
+    add_enum 'manga_plus.MangaPage.Type' do
+      value :SINGLE, 0
+      value :LEFT, 1
+      value :RIGHT, 2
+      value :DOUBLE, 3
     end
     add_message 'manga_plus.Page' do
       optional :mangaPage, :message, 1, 'manga_plus.MangaPage'
@@ -118,6 +124,7 @@ module MangaPlus
   Chapter = ::Google::Protobuf::DescriptorPool.generated_pool.lookup('manga_plus.Chapter').msgclass
   LastPage = ::Google::Protobuf::DescriptorPool.generated_pool.lookup('manga_plus.LastPage').msgclass
   MangaPage = ::Google::Protobuf::DescriptorPool.generated_pool.lookup('manga_plus.MangaPage').msgclass
+  MangaPage::Type = ::Google::Protobuf::DescriptorPool.generated_pool.lookup('manga_plus.MangaPage.Type').enummodule
   Page = ::Google::Protobuf::DescriptorPool.generated_pool.lookup('manga_plus.Page').msgclass
   MangaViewer = ::Google::Protobuf::DescriptorPool.generated_pool.lookup('manga_plus.MangaViewer').msgclass
   TitleDetailView = ::Google::Protobuf::DescriptorPool.generated_pool.lookup('manga_plus.TitleDetailView').msgclass
