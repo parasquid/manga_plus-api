@@ -14,3 +14,5 @@ get the key names from the site's javascript
 see app.sample.js#846
 
 protoc --proto_path=. --ruby_out=./ manga_plus.proto
+
+look for something like `e.Title = (function`

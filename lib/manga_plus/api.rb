@@ -15,6 +15,7 @@ module MangaPlus
         image.bytes.map.with_index { |e, i| e ^ key.bytes[i % key_size] }
       end
     end
+
     API = 'https://jumpg-webapi.tokyo-cdn.com/api'
 
     class AllTitlesView
@@ -43,7 +44,7 @@ module MangaPlus
       OPTIONS = 'chapter_id=%<chapter_id>s&split=%<split>s&img_quality=%<img_quality>s'
       URL = API + '/manga_viewer?' + OPTIONS
 
-      def initialize(chapter_id, split: 'yes', img_quality: 'super_high')
+      def initialize(chapter_id, split: 'no', img_quality: 'super_high')
         @options = {
           chapter_id: chapter_id,
           split: split,
@@ -55,6 +56,21 @@ module MangaPlus
         protobuf = HTTParty.get(URL % @options).body
         response = MangaPlus::Response.decode(protobuf).to_h
         response.dig(:success, :mangaViewer)
+      end
+    end
+
+    class WebHomeView
+      OPTIONS = "?lang=%<language>s"
+      URL = API + '/web/web_home' + OPTIONS
+
+      def initialize(language: 'eng')
+        @options = { language: language }
+      end
+
+      def call
+        protobuf = HTTParty.get(URL % @options).body
+        response = MangaPlus::Response.decode(protobuf).to_h
+        response.dig(:success, :webHomeView)
       end
     end
   end

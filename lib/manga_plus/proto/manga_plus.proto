@@ -123,7 +123,7 @@ message SuccessResult {
     TitleDetailView titleDetailView = 8;
     // commentListView = 9
     MangaViewer mangaViewer = 10;
-    // webHomeView
+    WebHomeView webHomeView = 11;
     // settingsView
     // profileSettingsView
     // updateProfileResultView
@@ -140,4 +140,25 @@ message Response {
 
 message AllTitlesView {
     repeated Title titles = 1;
+}
+
+message WebHomeView {
+    // Banner banner = 1;
+    repeated UpdatedTitleGroup updatedTitleGroup = 2;
+    repeated Title title = 3;
+    // Popup popup = 4;
+}
+
+message UpdatedTitleGroup {
+    string groupName = 1;
+    repeated UpdatedTitle title = 2;
+}
+
+message UpdatedTitle {
+    Title title = 1;
+    uint32 chapterId = 2;
+    string chapterName = 3;
+    string chapterSubTitle = 4;
+    bool isLatest = 5;
+    bool isVerticalOnly = 6;
 }
