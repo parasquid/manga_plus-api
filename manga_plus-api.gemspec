@@ -13,6 +13,7 @@ Gem::Specification.new do |spec|
   spec.summary       = 'Thin API layer for the MangaPlus manga site'
   # spec.description   = 'Write a longer description or delete this line.'
   spec.homepage      = 'https://github.com/parasquid/manga_plus-api'
+  spec.licenses    = ['GPL-3.0-or-later']
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
   # to allow pushing to a single host or delete this section to allow pushing to any host.
