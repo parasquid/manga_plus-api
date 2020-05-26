@@ -44,7 +44,7 @@ module MangaPlus
       OPTIONS = 'chapter_id=%<chapter_id>s&split=%<split>s&img_quality=%<img_quality>s'
       URL = API + '/manga_viewer?' + OPTIONS
 
-      def initialize(chapter_id, split: 'no', img_quality: 'super_high')
+      def initialize(chapter_id, split: 'yes', img_quality: 'super_high')
         @options = {
           chapter_id: chapter_id,
           split: split,
