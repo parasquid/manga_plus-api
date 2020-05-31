@@ -1,3 +1,3 @@
 #!/bin/sh
 
-cat $1 | protoc --decode_raw
+cat $1 | ../../bin/protoc --decode_raw
