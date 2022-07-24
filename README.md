@@ -60,6 +60,12 @@ manga[:pages].compact.each_with_index do |page, index|
 end
 ```
 
+This is also available in the `examples/get_random_chapter.rb` in the repository. If you have docker and docker-compose installed, you can run:
+
+``` bash
+docker compose run ruby bash -c "bundle && examples/get_random_chapter.rb"
+```
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
