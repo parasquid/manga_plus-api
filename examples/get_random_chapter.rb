@@ -5,14 +5,16 @@
 require 'bundler/setup'
 require 'manga_plus/api'
 
-all_api = MangaPlus::Api::AllTitlesView.new
-title_id = all_api.call[:titles].sample[:titleId]
+include MangaPlus::Api
 
-title_api = MangaPlus::Api::TitleDetailView.new(title_id)
-chapter_id = title_api.call[:firstChapterList].first[:chapterId]
+all_titles_view = AllTitlesView.new
+title_id = all_titles_view.call[:titles].sample[:titleId]
 
-manga_api = MangaPlus::Api::MangaViewer.new(chapter_id)
-manga = manga_api.call
+title_detail_view = TitleDetailView.new(title_id)
+chapter_id = title_detail_view.call[:firstChapterList].first[:chapterId]
+
+manga_viewer = MangaViewer.new(chapter_id)
+manga = manga_viewer.call
 
 folder = "#{manga[:titleName]} #{manga[:chapterName]} - #{chapter_id}"
 Dir.mkdir folder unless Dir.exists?(folder); Dir.chdir folder
@@ -25,7 +27,7 @@ manga[:pages].compact.each_with_index do |page, index|
   type = page[:mangaPage][:type]
 
   image = HTTParty.get(page[:mangaPage][:imageUrl]).body
-  decoded_image = MangaPlus::Api::Utils.decode(image, encryption_key: key)
+  decoded_image = Utils.decode(image, encryption_key: key)
 
   File.open(filename + " [#{type}]" + ".jpg", 'wb') do |file|
     file.write(decoded_image.pack("C*"))
