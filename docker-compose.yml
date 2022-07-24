@@ -1,0 +1,10 @@
+version: '3.2'
+services:
+  ruby:
+    platform: linux/amd64
+    image: ruby:3.1.2
+    user: "${UID}:${GID}"
+    volumes:
+      - ./:/tmp
+    working_dir: /tmp
+    command: "irb"
