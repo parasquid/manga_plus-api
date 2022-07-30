@@ -8,7 +8,9 @@ require 'manga_plus/api'
 include MangaPlus::Api
 
 all_titles_view = AllTitlesView.new
-title_id = all_titles_view.call[:titles].sample[:titleId]
+title_id = all_titles_view.call[:titles]
+  .select { |title| title[:language] == :ENGLISH }
+  .sample[:titleId]
 
 title_detail_view = TitleDetailView.new(title_id)
 chapter_id = title_detail_view.call[:firstChapterList].first[:chapterId]
