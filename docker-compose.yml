@@ -8,4 +8,4 @@ services:
       - ./:/app
       - ./.bundle:/usr/local/bundle
     working_dir: /app
-    command: "irb"
+    command: "bin/console"
