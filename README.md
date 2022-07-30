@@ -63,7 +63,8 @@ end
 This is also available in the `examples/get_random_chapter.rb` in the repository. If you have docker and docker-compose installed, you can run:
 
 ``` bash
-docker compose run ruby bash -c "bundle && examples/get_random_chapter.rb"
+docker compose run ruby bundle
+docker compose run ruby examples/get_random_chapter.rb
 ```
 
 ## Development
