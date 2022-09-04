@@ -21,6 +21,7 @@ manga = manga_viewer.call
 folder = "#{manga[:titleName]} #{manga[:chapterName]} - #{chapter_id}"
 Dir.mkdir folder unless Dir.exist?(folder)
 Dir.chdir folder
+puts "downloading manga #{folder}"
 
 manga[:pages].compact.each_with_index do |page, index|
   next unless page[:mangaPage]
@@ -35,5 +36,6 @@ manga[:pages].compact.each_with_index do |page, index|
   fullname = "#{filename} [#{type}].jpg"
   File.open(fullname, 'wb') do |file|
     file.write(decoded_image.pack('C*'))
+    puts "written #{fullname}"
   end
 end
